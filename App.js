@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Login from './screen/login/Login';
-import LoginWithPhoneNumberScreen from './screen/login/LoginWithPhoneNumberScreen';
+import LoginWithPhoneNumberScreen, {LoginOTP} from './screen/login/LoginWithPhoneNumberScreen';
 import SignupScreen from './screen/login/SignupScreen';
 import Home from './screen/home/Home';
 import ChatList from './screen/chat/ChatList';
@@ -27,6 +27,7 @@ export default function App() {
       >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="LoginWithPhoneNumberScreen" component={LoginWithPhoneNumberScreen} />
+        <Stack.Screen name="LoginOTP" component={LoginOTP} />
         <Stack.Screen name="SignupScreen" component={SignupScreen} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="ChatList" component={ChatList} />

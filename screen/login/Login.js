@@ -43,7 +43,7 @@ const Login = () => {
             )}
             <Animated.View style={[styles.containerLogin, { opacity: loginOpacity }]}>
                 <Image style={styles.logo} source={require('../../assets/images/login/logo.png')} />
-                {/* Dòng chữ dưới logo*/}
+                {/* Dòng chữ dưới logo */}
                 <View style={styles.vPolicy}>
                     <Text style={styles.txtPolicy01}>By clicking Log In, you agree with our </Text>
                     <Text style={styles.txtPolicy02}>Terms.</Text>
