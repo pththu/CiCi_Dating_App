@@ -57,7 +57,7 @@ const Login = () => {
                 </View>
                 <View style={styles.vBtn}>
                     <TouchableOpacity style={styles.btnLogin}
-                        onPress={() => navigation.navigate('Home')}
+                        onPress={() => navigation.navigate('inap')}
                         activeOpacity={1}>
                         <Image source={require('../../assets/images/login/iconGG.png')}
                             style={styles.imgLogin}
