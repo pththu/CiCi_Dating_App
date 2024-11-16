@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Login from './screen/login/Login';
 import LoginWithPhoneNumberScreen, { LoginOTP } from './screen/login/LoginWithPhoneNumberScreen';
-import SignupScreen from './screen/login/SignupScreen';
+import SignupScreen, {SignUpOTP} from './screen/login/SignupScreen';
 import Home from './screen/home/Home';
 import ChatList from './screen/chat/ChatList';
 import ChatDetail from './screen/chat/ChatDetail';
@@ -46,6 +46,7 @@ const AuthNavigation = () => {
       <Stack.Screen name="LoginWithPhoneNumberScreen" component={LoginWithPhoneNumberScreen} />
       <Stack.Screen name="LoginOTP" component={LoginOTP} />
       <Stack.Screen name="SignupScreen" component={SignupScreen} />
+      <Stack.Screen name="SignUpOTP" component={SignUpOTP} />
     </Stack.Navigator>
   );
 }

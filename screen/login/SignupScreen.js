@@ -14,7 +14,7 @@ export const SignUpOTP = () => {
                 <TouchableOpacity style={styles.btnBack}
                     onPress={() => navigation.goBack()}
                     activeOpacity={1}>
-                    <Image source={require('../../assets/images/login/arrow-left.png')} />
+                    <Icon name='arrow-left' size={20} color={'grey'}/>
                 </TouchableOpacity>
                 <Text style={styles.txtTitle}>Enter OTP</Text>
                 <View style={styles.vInputOTP}>
@@ -50,7 +50,7 @@ const SignupScreen = () => {
     };
 
     const handleSignUpOTP = () => {
-        navigation.navigate('SignUpOTP');
+        
     }
 
     return (
@@ -107,7 +107,7 @@ const SignupScreen = () => {
                         onChangeText={setPhoneNumber}
                     />
                     <TouchableOpacity style={styles.btnSignUp}
-                        onPress={handleSignUpOTP}
+                        onPress={() => navigation.navigate('SignUpOTP')}
                     >
                         <Text style={styles.txtSignUp}>SIGN UP</Text>
                     </TouchableOpacity>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     ipName: {
         paddingVertical: 10,
         paddingLeft: 20,
-        width: '100',
+        width: '100%',
         borderBottomWidth: 1,
         borderBottomColor: '#8E8E8E',
     },

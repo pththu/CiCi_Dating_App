@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, memo } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, Modal, Animated, Easing } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Picker } from '@react-native-picker/picker';
@@ -6,7 +6,6 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
-    
     const navigation = useNavigation();
     const [isFilterChoose, setIsFilterChoose] = useState(false);
     const [distance, setDistance] = useState(0);
@@ -14,7 +13,7 @@ const Home = () => {
     const [age, setAge] = useState([18, 30]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentImage, setCurrentImage] = useState(require('../../assets/images/home/person01.jpg'));
-    const [name, setName] = useState("Noko Lele");
+    const [name, setName] = useState('Noko Lele');
     const [inforAge, setInforAge] = useState(34);
     const animation = useRef(new Animated.Value(0)).current;
     const rotation = useRef(new Animated.Value(0)).current;
@@ -40,10 +39,10 @@ const Home = () => {
         },
     ];
 
-    const handleSwipe = (direction) => {
+    const handleActionSwipe = (direction) => {
+
         animation.setValue(0);
         rotation.setValue(0);
-
         const isRight = direction === 'right';
 
         Animated.parallel([
@@ -51,31 +50,32 @@ const Home = () => {
                 toValue: isRight ? 700 : -700,
                 duration: 400,
                 useNativeDriver: true,
-                easing: Easing.cubic,
+                easing: Easing.ease,
             }),
             Animated.timing(rotation, {
                 toValue: isRight ? 1 : -1,
                 duration: 400,
                 useNativeDriver: true,
-                easing: Easing.cubic,
-            })
+                easing: Easing.ease,
+            }),
         ]).start(() => {
             const nextIndex = (currentIndex + 1) % data.length;
             setCurrentIndex(nextIndex);
             setCurrentImage(data[nextIndex].image);
             setName(data[nextIndex].name);
             setInforAge(data[nextIndex].age);
+
             animation.setValue(0);
             rotation.setValue(0);
         });
     };
 
     const handleNo = () => {
-        handleSwipe('left');
+        handleActionSwipe('left');
     };
 
     const handleYes = () => {
-        handleSwipe('right');
+        handleActionSwipe('right');
     };
 
     const rotateZ = rotation.interpolate({
@@ -102,7 +102,7 @@ const Home = () => {
         gender === selectedGender ? styles.txtBtnGenderSelected : styles.txtBtnGenderNoSelected,
     ];
 
-    const filter = (
+    const chooseFilter = (
         <SafeAreaView style={styles.containerFilter}>
             <View style={styles.subContainerFilter}>
                 <View style={styles.vBtnFilter}>
@@ -210,7 +210,7 @@ const Home = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>            
+            </View>
         </SafeAreaView>
     );
 
@@ -221,7 +221,7 @@ const Home = () => {
                 <Modal transparent={true} animationType="fade" visible={isFilterChoose}>
                     <View style={styles.overlay}>
                         <View style={styles.modalContainer}>
-                            {filter}
+                            {chooseFilter}
                         </View>
                     </View>
                 </Modal>

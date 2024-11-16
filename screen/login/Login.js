@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
         position: 'absolute', // Để login luôn ở đúng vị trí khi splash dịch chuyển
         width: '100%',
         height: '100%',
+        paddingHorizontal: 20,
     },
     background: {
         position: 'absolute',

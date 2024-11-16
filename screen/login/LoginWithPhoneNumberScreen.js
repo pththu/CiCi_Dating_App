@@ -5,20 +5,21 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const countryCode = [
-    { value: 'Vietnam', country: 'VN +84' },
-    { value: 'US', country: 'US +1' },
-    { value: 'Russia', country: 'R +7' },
-    { value: 'India', country: 'IN +91' },
-    { value: 'Canada', country: 'CA +1' },
-    { value: 'Australia', country: 'AU +61' },
-    { value: 'UK', country: 'GB +44' },
-    { value: 'France', country: 'FR +33' },
-    { value: 'Germany', country: 'DE +49' },
-    { value: 'Japan', country: 'JP +81' },
-    { value: 'South Korea', country: 'KR +82' },
-    { value: 'Brazil', country: 'BR +55' },
-    { value: 'Mexico', country: 'MX +52' }
+    { id: 1, value: 'Vietnam', country: 'VN +84' },
+    { id: 2, value: 'US', country: 'US +1' },
+    { id: 3, value: 'Russia', country: 'R +7' },
+    { id: 4, value: 'India', country: 'IN +91' },
+    { id: 5, value: 'Canada', country: 'CA +1' },
+    { id: 6, value: 'Australia', country: 'AU +61' },
+    { id: 7, value: 'UK', country: 'GB +44' },
+    { id: 8, value: 'France', country: 'FR +33' },
+    { id: 9, value: 'Germany', country: 'DE +49' },
+    { id: 10, value: 'Japan', country: 'JP +81' },
+    { id: 11, value: 'South Korea', country: 'KR +82' },
+    { id: 12, value: 'Brazil', country: 'BR +55' },
+    { id: 13, value: 'Mexico', country: 'MX +52' }
 ];
+
 
 export const LoginOTP = () => {
     const navigation = useNavigation();
@@ -29,7 +30,7 @@ export const LoginOTP = () => {
                 <TouchableOpacity style={styles.btnBack}
                     onPress={() => navigation.goBack()}
                     activeOpacity={1}>
-                    <Icon name='arrow-left' size={20} color={'grey'}/>
+                    <Icon name='arrow-left' size={20} color={'grey'} />
                 </TouchableOpacity>
                 <Text style={styles.txtTitle}>Enter OTP</Text>
                 <View style={styles.vInputOTP}>
@@ -62,7 +63,7 @@ const LoginWithPhoneNumberScreen = () => {
                 <TouchableOpacity style={styles.btnBack}
                     onPress={() => navigation.goBack()}
                     activeOpacity={1}>
-                    <Icon name='arrow-left' size={20} color={'grey'}/>
+                    <Icon name='arrow-left' size={20} color={'grey'} />
                 </TouchableOpacity>
                 <Text style={styles.txtTitle}>My number is</Text>
                 <View style={styles.vInputNumberPhone}>
@@ -71,7 +72,11 @@ const LoginWithPhoneNumberScreen = () => {
                             selectedValue={selectedCountryCode}
                             onValueChange={(itemValue) => setSelectedCountryCode(itemValue)}>
                             {countryCode.map((item, index) => (
-                                <Picker.Item style={styles.pickerItem} label={item.country} value={item.value} />
+                                <Picker.Item style={styles.pickerItem}
+                                    key={item.id}
+                                    label={item.country}
+                                    value={item.value}
+                                />
                             ))}
                         </Picker>
                     </View>
