@@ -13,36 +13,24 @@ const Home = () => {
     const [age, setAge] = useState([18, 30]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentImage, setCurrentImage] = useState(require('../../assets/images/home/person01.jpg'));
-    const [name, setName] = useState('Noko Lele');
-    const [inforAge, setInforAge] = useState(34);
+    const [currentName, setName] = useState('Noko Lele');
+    const [currentAge, setInforAge] = useState(34);
     const animation = useRef(new Animated.Value(0)).current;
     const rotation = useRef(new Animated.Value(0)).current;
 
     const data = [
-        {
-            id: 1,
-            name: 'Noko Lele',
-            age: 34,
-            image: require('../../assets/images/home/person01.jpg')
-        },
-        {
-            id: 1,
-            name: 'Person 01',
-            age: 28,
-            image: require('../../assets/images/home/person02.jpg')
-        },
-        {
-            id: 1,
-            name: 'Person 02',
-            age: 25,
-            image: require('../../assets/images/home/person03.jpg')
-        },
+        { id: 1, name: 'Noko Lele', age: 34, image: require('../../assets/images/home/person01.jpg') },
+        { id: 2, name: 'Person 01', age: 28, image: require('../../assets/images/home/person02.jpg') },
+        { id: 3, name: 'Person 02', age: 25, image: require('../../assets/images/home/person03.jpg') },
     ];
 
-    const handleActionSwipe = (direction) => {
+    const [isAnimating, setIsAnimating] = useState(false);  // Thêm state để kiểm soát animation
+    const [opacity] = useState(new Animated.Value(1));
 
-        animation.setValue(0);
-        rotation.setValue(0);
+    const handleActionSwipe = (direction) => {
+        if (isAnimating) return;  // Nếu đang animate thì không cho swipe tiếp
+
+        setIsAnimating(true);  // Bắt đầu animation
         const isRight = direction === 'right';
 
         Animated.parallel([
@@ -50,47 +38,41 @@ const Home = () => {
                 toValue: isRight ? 700 : -700,
                 duration: 400,
                 useNativeDriver: true,
-                easing: Easing.ease,
+                easing: Easing.cubic,
             }),
             Animated.timing(rotation, {
                 toValue: isRight ? 1 : -1,
                 duration: 400,
                 useNativeDriver: true,
-                easing: Easing.ease,
+                easing: Easing.cubic,
             }),
         ]).start(() => {
+            // Tính index mới
             const nextIndex = (currentIndex + 1) % data.length;
-            setCurrentIndex(nextIndex);
-            setCurrentImage(data[nextIndex].image);
-            setName(data[nextIndex].name);
-            setInforAge(data[nextIndex].age);
 
+            // Reset animation ngay lập tức
             animation.setValue(0);
             rotation.setValue(0);
+
+            // Đợi một frame render để tránh nhấp nháy
+            requestAnimationFrame(() => {
+                // Cập nhật state
+                setCurrentIndex(nextIndex);
+                setCurrentImage(data[nextIndex].image);
+                setName(data[nextIndex].name);
+                setInforAge(data[nextIndex].age);
+
+                // Cho phép animation tiếp theo
+                setIsAnimating(false);
+            });
+            opacity.setValue(1);
         });
-    };
-
-    const handleNo = () => {
-        handleActionSwipe('left');
-    };
-
-    const handleYes = () => {
-        handleActionSwipe('right');
     };
 
     const rotateZ = rotation.interpolate({
         inputRange: [-1, 0, 1],
         outputRange: ['-30deg', '0deg', '30deg'],
     });
-
-    const CustomMarker = ({ currentValue }) => {
-        return (
-            <View style={styles.itemValueAge}>
-                <Text style={styles.ageValue}>{currentValue}</Text>
-                <View style={styles.ageValueDot} />
-            </View>
-        );
-    };
 
     const getGenderButtonStyle = (selectedGender) => [
         styles.btnGender,
@@ -101,6 +83,15 @@ const Home = () => {
         styles.txtBtnGender,
         gender === selectedGender ? styles.txtBtnGenderSelected : styles.txtBtnGenderNoSelected,
     ];
+
+    const CustomMarker = ({ currentValue }) => {
+        return (
+            <View style={styles.itemValueAge}>
+                <Text style={styles.ageValue}>{currentValue}</Text>
+                <View style={styles.ageValueDot} />
+            </View>
+        );
+    };
 
     const chooseFilter = (
         <SafeAreaView style={styles.containerFilter}>
@@ -188,23 +179,21 @@ const Home = () => {
                 </View>
                 <View style={styles.content}>
                     <View style={styles.vImage}>
-                        <Animated.View
-                            style={{ transform: [{ translateX: animation }, { rotateZ }], }}
-                        >
+                        <Animated.View style={{ transform: [{ translateX: animation }, { rotateZ }],  opacity }}>
                             <Image source={currentImage}
                                 style={styles.imgPerson}
                             />
                         </Animated.View>
-                        <Text style={styles.txtName}>{name}, {inforAge}</Text>
+                        <Text style={styles.txtName}>{currentName}, {currentAge}</Text>
                     </View>
                     <View style={styles.btnLike}>
                         <TouchableOpacity style={styles.btnNo}
-                            onPress={handleNo}
+                            onPress={() => handleActionSwipe('left')}
                             activeOpacity={1}>
                             <Icon name="close" size={30} color="#fff" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btnYes}
-                            onPress={handleYes}
+                            onPress={() => handleActionSwipe('right')}
                             activeOpacity={1}>
                             <Icon name="heart" size={30} color="#fff" />
                         </TouchableOpacity>
