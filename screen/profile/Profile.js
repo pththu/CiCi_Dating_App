@@ -7,8 +7,9 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  Alert,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker"; // Using named import
+import { Picker } from "@react-native-picker/picker";
 import Slider from "@react-native-community/slider";
 // import RangeSlider from "react-native-range-slider-expo";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
@@ -112,7 +113,7 @@ const GenderSelector = ({ selectedGender, setSelectedGender }) => {
   );
 };
 
-const Profile = ({ navigation }) => {
+const Profile = ({ navigation, route }) => {
   const [low, setLow] = useState(0);
   const [high, setHigh] = useState(100);
 
@@ -129,6 +130,19 @@ const Profile = ({ navigation }) => {
 
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [selectedGender, setSelectedGender] = useState("Women");
+
+  const info = {
+    name: "Jenny",
+    phoneNumber: "+91 9876543210",
+    dob: "1997-05-02",
+    email: "abcqwertyu@gmail.com",
+  };
+
+  const { updatedInfo } = route.params || {};
+
+  const formattedDob = updatedInfo?.dob
+    ? new Date(updatedInfo.dob).toLocaleDateString()
+    : new Date(info.dob).toLocaleDateString();
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -166,29 +180,37 @@ const Profile = ({ navigation }) => {
           <View style={styles.line1}>
             <Text style={styles.textTitle}>Account Settings</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate("EditProfile")}
+              onPress={() =>
+                navigation.navigate("EditProfile", {
+                  info: updatedInfo || info,
+                })
+              }
             >
               <Text style={styles.textEdit}>Edit</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.box}>
             <Text style={styles.text}>Name</Text>
-            <Text style={[styles.text, { color: "#8e8e8e" }]}>Jenny</Text>
+            <Text style={[styles.text, { color: "#8e8e8e" }]}>
+              {updatedInfo?.name || info.name}
+            </Text>
           </View>
           <View style={styles.box}>
             <Text style={styles.text}>Phone Number</Text>
             <Text style={[styles.text, { color: "#8e8e8e" }]}>
-              +91 9876543210
+              {updatedInfo?.phoneNumber || info.phoneNumber}
             </Text>
           </View>
           <View style={styles.box}>
             <Text style={styles.text}>Date of birth</Text>
-            <Text style={[styles.text, { color: "#8e8e8e" }]}>02-05-1997</Text>
+            <Text style={[styles.text, { color: "#8e8e8e" }]}>
+              {formattedDob}
+            </Text>
           </View>
           <View style={styles.box}>
             <Text style={styles.text}>Email</Text>
             <Text style={[styles.text, { color: "#8e8e8e" }]}>
-              abcqwertyu@gmail.com
+              {updatedInfo?.email || info.email}
             </Text>
           </View>
         </View>

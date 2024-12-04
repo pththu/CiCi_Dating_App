@@ -4,25 +4,50 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Alert
 } from "react-native";
 import React, { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 
-const EditProfile = ({ navigation }) => {
-  const [dateOfBirth, setDateOfBirth] = useState(new Date());
+const EditProfile = ({ navigation, route }) => {
+  const { info } = route.params;
+
+  const [dateOfBirth, setDateOfBirth] = useState(new Date(info.dob));
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [formattedDate, setFormattedDate] = useState(
-    dateOfBirth.toLocaleDateString()
+    new Date(info.dob).toLocaleDateString()
   );
+
+  const [name, setName] = useState(info.name);
+  const [phoneNumber, setPhoneNumber] = useState(info.phoneNumber);
+  const [email, setEmail] = useState(info.email);
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || dateOfBirth;
     setShowDatePicker(false);
     setDateOfBirth(currentDate);
     setFormattedDate(currentDate.toLocaleDateString());
+  };
+
+  const phoneRegex = /^[+]?[0-9]{1,4}?[-.\s]?[0-9]{1,15}$/;
+
+  const handleSave = () => {
+
+    if (!phoneRegex.test(phoneNumber)) {
+      Alert.alert("Invalid Phone Number", "Please enter a valid phone number.");
+      return; 
+    }
+
+    const updatedInfo = {
+      name,
+      phoneNumber,
+      email,
+      dob: dateOfBirth.toISOString(), 
+    };
+
+    navigation.navigate("Profile", { info: updatedInfo || info });
   };
 
   return (
@@ -45,20 +70,22 @@ const EditProfile = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Name"
-          defaultValue="Jenny"
+          value={name}
+          onChangeText={setName} 
         />
         <TextInput
           style={styles.input}
           placeholder="Phone"
-          defaultValue="+91 9876543210"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber} 
         />
 
-        {/* TextInput for selecting the date, shows DateTimePicker when tapped */}
         <TextInput
           style={styles.input}
           placeholder="Date of Birth"
           value={formattedDate}
-          onTouchStart={() => setShowDatePicker(true)} // Show DateTimePicker on touch
+          onTouchStart={() => setShowDatePicker(true)}
+          editable={false}
         />
 
         {showDatePicker && (
@@ -75,11 +102,12 @@ const EditProfile = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          defaultValue="abcqwertyu@gmail.com"
+          value={email}
+          onChangeText={setEmail}
         />
       </View>
 
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity style={styles.btn} onPress={handleSave}>
         <Text style={styles.textSave}>SAVE</Text>
       </TouchableOpacity>
     </View>

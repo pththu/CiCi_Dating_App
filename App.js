@@ -15,7 +15,7 @@ import ChatDetail from './screen/chat/ChatDetail';
 import Likes from './screen/like/Likes';
 import Match from './screen/like/Match';
 import Profile from './screen/profile/Profile';
-import EditProfilt from './screen/profile/EditProfile';
+import EditProfile from './screen/profile/EditProfile';
 import PlanSetting from './screen/profile/PlanSetting';
 
 const Stack = createStackNavigator();
@@ -32,7 +32,7 @@ export default function App() {
         <Stack.Screen name='inap' component={InapNavigation} />
         <Stack.Screen name="ChatDetail" component={ChatDetail} />
         <Stack.Screen name="Match" component={Match} />
-        <Stack.Screen name="EditProfilt" component={EditProfilt} />
+        <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="PlanSetting" component={PlanSetting} />
       </Stack.Navigator>
     </NavigationContainer>
